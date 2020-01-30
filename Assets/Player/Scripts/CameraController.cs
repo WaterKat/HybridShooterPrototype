@@ -16,8 +16,12 @@ namespace WaterKat.Player
 
         public Vector2 CameraRotation = Vector2.zero;
         public float CameraDistance = 1;
-
         private void Update()
+        {
+
+
+        }
+        private void LateUpdate()
         {
             float LocalTransition = 0;
 
@@ -42,19 +46,24 @@ namespace WaterKat.Player
             CameraRotation.x = Mathf.Repeat(CameraRotation.x + 360f, 720f) - 360f;
             CameraRotation.y = Mathf.Repeat(CameraRotation.y + 360f, 720f) - 360f;
 
+            Vector2 LerpedSensitivity = Vector2.Lerp(CameraDatas[StartCamera].CameraSensitivity, CameraDatas[EndCamera].CameraSensitivity, LocalTransition);
+
+            CameraRotation.x += Input.GetAxis("Mouse X") * LerpedSensitivity.x;
+            CameraRotation.y += -Input.GetAxis("Mouse Y") * LerpedSensitivity.y;
+
             Vector2 LerpedXBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationXBounds, CameraDatas[EndCamera].CameraRotationXBounds, LocalTransition);
             Vector2 LerpedYBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationYBounds, CameraDatas[EndCamera].CameraRotationYBounds, LocalTransition);
-            Vector2 LerpedZBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationZBounds, CameraDatas[EndCamera].CameraRotationZBounds, LocalTransition);
+            Vector2 LerpedZBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraDistanceBounds, CameraDatas[EndCamera].CameraDistanceBounds, LocalTransition);
 
-            CameraRotation.x = Mathf.Clamp(CameraRotation.x, LerpedXBounds.x, LerpedXBounds.y);
- //           CameraRotation.y = Mathf.Clamp(CameraRotation.y, LerpedYBounds.x, LerpedYBounds.y);
+ //           CameraRotation.x = Mathf.Clamp(CameraRotation.x, LerpedXBounds.x, LerpedXBounds.y);
+            CameraRotation.y = Mathf.Clamp(CameraRotation.y, LerpedYBounds.x, LerpedYBounds.y);
             CameraDistance = Mathf.Clamp(CameraDistance, LerpedZBounds.x, LerpedZBounds.y);
-
+                       
 
             CameraLerp(CameraDatas[StartCamera].TemplateCamera, CameraDatas[EndCamera].TemplateCamera, LocalTransition, PlayerCamera);
             PlayerCamera.transform.localPosition = PlayerCamera.transform.localPosition * CameraDistance;
-            PlayerCamera.transform.localPosition = Quaternion.Euler(CameraRotation) * PlayerCamera.transform.localPosition;
-            PlayerCamera.transform.rotation = PlayerCamera.transform.rotation * Quaternion.Euler(CameraRotation);
+            PlayerCamera.transform.localPosition = Quaternion.Euler(CameraRotation.y,CameraRotation.x,0) * PlayerCamera.transform.localPosition;
+            PlayerCamera.transform.rotation = PlayerCamera.transform.rotation * Quaternion.Euler(CameraRotation.y, CameraRotation.x, 0);
 
 
         }
