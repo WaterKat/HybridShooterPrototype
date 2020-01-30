@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace WaterKat.Player
 {
+    [ExecuteAlways]
     public class CameraController : MonoBehaviour
     {
-        public List<Camera> CameraTemplates;
+        public Camera PlayerCamera;
+        public List<CameraData> CameraDatas;
 
         [Range(0,2)]
         public float CameraTransition = 0;
+
+        public Vector2 CameraRotation = Vector2.zero;
+        public float CameraDistance = 1;
 
         private void Update()
         {
@@ -17,13 +23,40 @@ namespace WaterKat.Player
 
             int StartCamera = Mathf.FloorToInt(CameraTransition);
 ;
-            if (StartCamera == CameraTemplates.Count-1)
+            if (StartCamera == CameraDatas.Count-1)
             {
                 LocalTransition = 1f;
-                StartCamera = CameraTemplates.Count - 2;
+                StartCamera = CameraDatas.Count - 2;
+            }
+            else
+            {
+                LocalTransition = CameraTransition % 1;
             }
 
             int EndCamera = StartCamera + 1;
+
+            //Debug.Log("StartCamera" + CameraTemplates[StartCamera].name);
+            //Debug.Log("EndCamera " + CameraTemplates[EndCamera].name);
+            //Debug.Log("LocalTransition " + LocalTransition);
+
+            CameraRotation.x = Mathf.Repeat(CameraRotation.x + 360f, 720f) - 360f;
+            CameraRotation.y = Mathf.Repeat(CameraRotation.y + 360f, 720f) - 360f;
+
+            Vector2 LerpedXBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationXBounds, CameraDatas[EndCamera].CameraRotationXBounds, LocalTransition);
+            Vector2 LerpedYBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationYBounds, CameraDatas[EndCamera].CameraRotationYBounds, LocalTransition);
+            Vector2 LerpedZBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationZBounds, CameraDatas[EndCamera].CameraRotationZBounds, LocalTransition);
+
+            CameraRotation.x = Mathf.Clamp(CameraRotation.x, LerpedXBounds.x, LerpedXBounds.y);
+ //           CameraRotation.y = Mathf.Clamp(CameraRotation.y, LerpedYBounds.x, LerpedYBounds.y);
+            CameraDistance = Mathf.Clamp(CameraDistance, LerpedZBounds.x, LerpedZBounds.y);
+
+
+            CameraLerp(CameraDatas[StartCamera].TemplateCamera, CameraDatas[EndCamera].TemplateCamera, LocalTransition, PlayerCamera);
+            PlayerCamera.transform.localPosition = PlayerCamera.transform.localPosition * CameraDistance;
+            PlayerCamera.transform.localPosition = Quaternion.Euler(CameraRotation) * PlayerCamera.transform.localPosition;
+            PlayerCamera.transform.rotation = PlayerCamera.transform.rotation * Quaternion.Euler(CameraRotation);
+
+
         }
 
         public void CameraLerp(Camera CameraA,Camera CameraB, float input, Camera TargetCamera)
