@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -399,6 +399,69 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1893537279
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1893537281}
+  - component: {fileID: 1893537280}
+  m_Layer: 0
+  m_Name: WKInput
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1893537280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893537279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad6f850c019e82a4d95f3e42bb8ef795, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Jump:
+    ButtonIDs: []
+    KeyIDs:
+    - space
+  MovementX:
+    AxisIDs: []
+    KeyIDs:
+    - Negative: a
+      Positive: d
+  MovementY:
+    AxisIDs: []
+    KeyIDs:
+    - Negative: w
+      Positive: s
+  CameraX:
+    AxisIDs: []
+    KeyIDs: []
+  CameraY:
+    AxisIDs: []
+    KeyIDs: []
+--- !u!4 &1893537281
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1893537279}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.3271439, y: 1.9685826, z: 0.57987857}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3712161254865027231
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -406,72 +469,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 963194228, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 1
+    - target: {fileID: 137149161, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
+      propertyPath: speed
+      value: 15
       objectReference: {fileID: 0}
-    - target: {fileID: 963194228, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 1
+    - target: {fileID: 137149164, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
+      propertyPath: AirJumpHeight
+      value: 7.5
       objectReference: {fileID: 0}
-    - target: {fileID: 963194228, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -3
+    - target: {fileID: 137149164, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
+      propertyPath: GroundJumpTime
+      value: 0.5
       objectReference: {fileID: 0}
-    - target: {fileID: 1764582836549863884, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraRotationYBounds.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836549863884, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraRotationYBounds.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836549863884, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraDistanceBounds.x
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836549863884, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraDistanceBounds.y
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836909524715, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraDistanceBounds.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836909524715, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraDistanceBounds.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836909524715, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraRotationYBounds.x
-      value: -100
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764582836909524715, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraRotationYBounds.y
-      value: 75
+    - target: {fileID: 137149164, guid: 24dde9f02cec3fd46849be91096f1f30, type: 3}
+      propertyPath: FallingGravityRatio
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 5213529414355606431, guid: 24dde9f02cec3fd46849be91096f1f30,
         type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 8046344945298974190, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraRotationYBounds.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8046344945298974190, guid: 24dde9f02cec3fd46849be91096f1f30,
-        type: 3}
-      propertyPath: CameraRotationYBounds.y
-      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 9078016189551526328, guid: 24dde9f02cec3fd46849be91096f1f30,
         type: 3}
