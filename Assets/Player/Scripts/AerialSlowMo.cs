@@ -23,8 +23,21 @@ namespace WaterKat.Player
             OriginalFixedDeltaTime = Time.fixedDeltaTime;
         }
 
+        public Camera CameraA;
+        public Camera CameraB;
         void Update()
         {
+            if (Transition == 1)
+            {
+                CameraA.gameObject.SetActive(true);
+                CameraB.gameObject.SetActive(true);
+            }
+            else
+            {
+                CameraA.gameObject.SetActive(false);
+                CameraB.gameObject.SetActive(false);
+            }
+
             if (Input.GetMouseButtonDown(1) && !ActivePlayer.CheckIfGrounded())
             {
                 Transition += TransitionSpeed;

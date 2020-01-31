@@ -16,9 +16,9 @@ TagManager:
   - Locked
   - Player
   - Warp
-  - PostProcessing
-  - 
-  - 
+  - GeneralPostProcessing
+  - WarpedPostProcessing
+  - GrayPostProcessing
   - 
   - 
   - 
