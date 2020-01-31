@@ -16,9 +16,25 @@ namespace WaterKat.Player
 
         public Vector2 CameraRotation = Vector2.zero;
         public float CameraDistance = 1;
+
+        public Quaternion CameraQuaternion
+        {
+            get
+            {
+                return Quaternion.Euler(CameraRotation.y, CameraRotation.x, 0);
+            }
+        }
         private void Update()
         {
-
+            if (!Input.GetMouseButton(1))
+            {
+                CameraTransition += 0.1f;
+            }
+            else
+            {
+                CameraTransition -= 0.1f;
+            }
+            CameraTransition = Mathf.Clamp(CameraTransition, 1, 2);
 
         }
         private void LateUpdate()
@@ -46,10 +62,14 @@ namespace WaterKat.Player
             CameraRotation.x = Mathf.Repeat(CameraRotation.x + 360f, 720f) - 360f;
             CameraRotation.y = Mathf.Repeat(CameraRotation.y + 360f, 720f) - 360f;
 
-            Vector2 LerpedSensitivity = Vector2.Lerp(CameraDatas[StartCamera].CameraSensitivity, CameraDatas[EndCamera].CameraSensitivity, LocalTransition);
+            Vector2 LerpedSensitivity = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationSensitivity, CameraDatas[EndCamera].CameraRotationSensitivity, LocalTransition);
 
             CameraRotation.x += Input.GetAxis("Mouse X") * LerpedSensitivity.x;
             CameraRotation.y += -Input.GetAxis("Mouse Y") * LerpedSensitivity.y;
+
+            float LerpedDistanceSensitivity = Mathf.Lerp(CameraDatas[StartCamera].CameraDistanceSensitivity, CameraDatas[EndCamera].CameraDistanceSensitivity, LocalTransition);
+
+            CameraDistance += -Input.mouseScrollDelta.y * LerpedDistanceSensitivity;
 
             Vector2 LerpedXBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationXBounds, CameraDatas[EndCamera].CameraRotationXBounds, LocalTransition);
             Vector2 LerpedYBounds = Vector2.Lerp(CameraDatas[StartCamera].CameraRotationYBounds, CameraDatas[EndCamera].CameraRotationYBounds, LocalTransition);
