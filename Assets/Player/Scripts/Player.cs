@@ -6,6 +6,20 @@ namespace WaterKat.Player
 {
     public class Player : MonoBehaviour
     {
+        [SerializeField]
+        int health = 100;
+        public int Health
+        {
+            get
+            {
+                return health;
+            }
+            set
+            {
+                health = value;
+            }
+        }
+
         #region "Grounded"
         public float GroundDistance = 0.15f;
         float SphereRadius = 0.6f;
