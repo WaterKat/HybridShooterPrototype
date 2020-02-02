@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using WaterKat.TimeKeeping;
+using WaterKat.TimeWarping;
 
 public class WarpedPlatform : MonoBehaviour
 {
@@ -22,19 +23,9 @@ public class WarpedPlatform : MonoBehaviour
 
     public Ticker WaitTicker = new Ticker() {};
 
-    public float OriginalTimeScale;
-
-    private float CurrentTimeScale
-    {
-        get
-        {
-            return Time.deltaTime * (OriginalTimeScale / Time.timeScale);
-        }
-    }
-
     private void Start()
     {
-        OriginalTimeScale = Time.timeScale;
+
 
         WaitTicker.MaxTick = PlatformWaitTime;
         Goal = (PointB.position - PointA.position).magnitude;
@@ -46,26 +37,26 @@ public class WarpedPlatform : MonoBehaviour
         switch (SwitchCase)
         {
             case 0:
-                if (WaitTicker.TryTick(CurrentTimeScale))
+                if (WaitTicker.TryTick(TimeWarp.WarpedDeltaTime))
                 {
                     SwitchCase++;
                 }
                 break;
             case 1:
-                Transition = Mathf.Clamp01(Transition+TransitionAmount*CurrentTimeScale);
+                Transition = Mathf.Clamp01(Transition+TransitionAmount*TimeWarp.WarpedDeltaTime);
                 if (Transition == 1)
                 {
                     SwitchCase++;
                 }
                 break;
             case 2:
-                if (WaitTicker.TryTick(CurrentTimeScale))
+                if (WaitTicker.TryTick(TimeWarp.WarpedDeltaTime))
                 {
                     SwitchCase++;
                 }
                 break;
             case 3:
-                Transition = Mathf.Clamp01(Transition - TransitionAmount*CurrentTimeScale);
+                Transition = Mathf.Clamp01(Transition - TransitionAmount*TimeWarp.WarpedDeltaTime);
                 if (Transition == 0)
                 {
                     SwitchCase = 0;

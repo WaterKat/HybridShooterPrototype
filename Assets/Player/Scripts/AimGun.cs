@@ -14,7 +14,7 @@ namespace WaterKat.Player
         private void Update()
         {
             Gun.transform.localPosition = PlayerCameraController.CameraQuaternion * GunTemplate.transform.localPosition;
-            Gun.transform.rotation = PlayerCameraController.CameraQuaternion;
+            Gun.transform.LookAt(PlayerCameraController.LookAtPoint());
         }
     }
 }

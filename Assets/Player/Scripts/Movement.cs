@@ -38,14 +38,12 @@ namespace WaterKat.Player
             }
         }
 
-        void Update()
+        private void Awake()
         {
-            bool Grounded = CheckIfGrounded();
-            test();
+            CurrentPlayer = GetComponent<Player>();
 
+           // CurrentPlayer.InputActionMap.Player.Move.performed += ctx => ChangeVelocity(CurrentPlayer.InputActionMap.Player.Move.ReadValue<Vector2>());
         }
-
-
 
         private bool CheckIfGrounded()
         {
@@ -54,17 +52,13 @@ namespace WaterKat.Player
             return IsGrounded;
         }
 
-        private void Start()
-        {
-            CurrentPlayer = GetComponent<Player>();
-        }
-
         public PhysicMaterial Move;
         public PhysicMaterial Stay;
 
-        void test()
+        /*
+        private void ChangeVelocity(Vector2 inputVector2)
         {
-            Vector3 Direction = new Vector3(WKInput.instance.MovementX.Get(), 0, -WKInput.instance.MovementY.Get());
+            Vector3 Direction = new Vector3(inputVector2.x, 0, inputVector2.y);
             Vector3 DirectionalVelocity = (Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * Direction * speed);
 
 
@@ -86,5 +80,37 @@ namespace WaterKat.Player
             //Debug.Log("Moving");
             transform.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(DirectionalVelocity.x, transform.gameObject.GetComponent<Rigidbody>().velocity.y, DirectionalVelocity.z);
         }
+        */
+
+        
+        private void Update()
+        {
+            bool Grounded = CurrentPlayer.CheckIfGrounded();
+
+            Vector2 MovementVector = CurrentPlayer.InputActionMap.Player.Move.ReadValue<Vector2>();
+
+            Vector3 Direction = new Vector3(MovementVector.x, 0, MovementVector.y);
+            Vector3 DirectionalVelocity = (Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0) * Direction * speed);
+
+
+            if (!CurrentPlayer.CheckIfGrounded())
+            {
+                GetComponent<Collider>().material = Move;
+            }
+            else
+            {
+                if (Direction.magnitude < 0.1f)
+                {
+                    GetComponent<Collider>().material = Stay;
+                }
+                else
+                {
+                    GetComponent<Collider>().material = Move;
+                }
+            }
+            //Debug.Log("Moving");
+            transform.gameObject.GetComponent<Rigidbody>().velocity = new Vector3(DirectionalVelocity.x, transform.gameObject.GetComponent<Rigidbody>().velocity.y, DirectionalVelocity.z);
+        }
+        
     }
 }

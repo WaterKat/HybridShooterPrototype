@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WaterKat.TimeWarping;
 
 namespace WaterKat.Player
 {
@@ -9,22 +10,11 @@ namespace WaterKat.Player
         public float Transition = 0;
         public float TransitionSpeed = 0.075f;
 
-        public float TimeScaleA = 1;
-        public float TimeScaleB = 0.25f;
-
         public Player ActivePlayer;
-
-        float OriginalTimeScale;
-        float OriginalFixedDeltaTime;
-
-        void Start()
-        {
-            OriginalTimeScale = Time.timeScale;
-            OriginalFixedDeltaTime = Time.fixedDeltaTime;
-        }
 
         public Camera CameraA;
         public Camera CameraB;
+
         void Update()
         {
             if (Transition == 1)
@@ -51,10 +41,12 @@ namespace WaterKat.Player
                 Transition += -TransitionSpeed;
             }
             Transition = Mathf.Clamp01(Transition);
+            
+            
 
-            float LerpedScale = Mathf.Lerp(TimeScaleA, TimeScaleB, Transition);
-            Time.timeScale = OriginalTimeScale * LerpedScale;
-            Time.fixedDeltaTime = OriginalFixedDeltaTime * LerpedScale;
+            float LerpedTimeScale = Mathf.Lerp(TimeWarp.DefaultTimeScale,TimeWarp.SlowedTimeScale, Transition);
+            Time.timeScale = LerpedTimeScale;
+            Time.fixedDeltaTime = TimeWarp.DefaultFixedTimeStep * LerpedTimeScale;
         }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 
 namespace WaterKat.Player
 {
-    [ExecuteAlways]
     public class CameraController : MonoBehaviour
     {
         public Camera PlayerCamera;
@@ -16,6 +16,8 @@ namespace WaterKat.Player
 
         public Vector2 CameraRotation = Vector2.zero;
         public float CameraDistance = 1;
+
+        public GameObject Reticle;
 
         public Quaternion CameraQuaternion
         {
@@ -85,7 +87,25 @@ namespace WaterKat.Player
             PlayerCamera.transform.localPosition = Quaternion.Euler(CameraRotation.y,CameraRotation.x,0) * PlayerCamera.transform.localPosition;
             PlayerCamera.transform.rotation = PlayerCamera.transform.rotation * Quaternion.Euler(CameraRotation.y, CameraRotation.x, 0);
 
+            Reticle.SetActive(CameraTransition == 1);
+        }
 
+        public Vector3 LookAtPoint()
+        {
+            Ray CameraRay = new Ray();
+            CameraRay.origin = PlayerCamera.transform.position+(PlayerCamera.transform.forward * PlayerCamera.nearClipPlane);
+            CameraRay.direction = PlayerCamera.transform.forward;
+
+            RaycastHit raycastHit;
+            bool RaycastHitSomething = Physics.Raycast(CameraRay, out raycastHit, 100f, ~LayerMask.GetMask("Player"));
+            if (RaycastHitSomething)
+            {
+                return raycastHit.point;
+            }
+            else
+            {
+                return PlayerCamera.transform.position + (PlayerCamera.transform.forward * 100f);
+            }
         }
 
         public void CameraLerp(Camera CameraA,Camera CameraB, float input, Camera TargetCamera)

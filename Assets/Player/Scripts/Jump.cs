@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 namespace WaterKat.Player
 {
@@ -22,7 +23,6 @@ namespace WaterKat.Player
         Rigidbody PlayerRB;
         Player CurrentPlayer;
 
-
         int AvailableJumps = 2;
         public int MaxAvailableJumps = 2;
 
@@ -39,11 +39,19 @@ namespace WaterKat.Player
         float GroundJumpVelocity = 1000f;
         float AirJumpVelocity = 1000f;
 
+        private void Awake()
+        {
+            CurrentPlayer = GetComponent<Player>();
+
+            CurrentPlayer.InputActionMap.Player.Jump.started += ctx => StartJump();
+            CurrentPlayer.InputActionMap.Player.Jump.canceled += ctx => EndJump();
+        }
+
         void Start()
         {
             CalculateDesiredJump();
             PlayerRB = transform.GetComponentInChildren<Rigidbody>();
-            CurrentPlayer = GetComponent<Player>();
+
         }
 
         void CalculateDesiredJump()
@@ -55,35 +63,21 @@ namespace WaterKat.Player
             AirJumpVelocity = RisingGravity * Mathf.Sqrt(2 * AirJumpHeight / RisingGravity);
 
             FreefallVelocity = -GroundJumpVelocity;
-
+            /*
             Debug.Log("JumpVelocity" + GroundJumpVelocity);
             Debug.Log("AirJumpVelocity" + AirJumpVelocity);
+            */
         }
 
-
-
-        void Update()
+        void StartJump()
         {
-            Vector3 CurrentVelocity = PlayerRB.velocity;
-            Vector3 NewVelocity = CurrentVelocity;
-
-            bool JumpPressed = WKInput.instance.Jump.Down();
-            bool JumpHeld = WKInput.instance.Jump.Held();
-
-            Vector3 GroundVelocity;
-            bool Grounded = CurrentPlayer.CheckIfGrounded(out GroundVelocity);
-
-            if (Grounded)
-            {
-                AvailableJumps = MaxAvailableJumps;
-            }
-
-            if ((JumpPressed) && (AvailableJumps > 0))
+            Vector3 NewVelocity = PlayerRB.velocity;
+            if (AvailableJumps > 0)
             {
                 AvailableJumps -= 1;
                 JumpState = PlayerJumpState.Jumping;
 
-                if (Grounded)
+                if (CurrentPlayer.Grounded)
                 {
                     NewVelocity.y = GroundJumpVelocity;
                 }
@@ -91,6 +85,26 @@ namespace WaterKat.Player
                 {
                     NewVelocity.y = AirJumpVelocity;
                 }
+            }
+            PlayerRB.velocity = NewVelocity;
+        }
+
+        void EndJump()
+        {
+            JumpState = PlayerJumpState.FreeFalling;
+        }
+
+        void Update()
+        {
+            Vector3 CurrentVelocity = PlayerRB.velocity;
+            Vector3 NewVelocity = CurrentVelocity;
+
+            Vector3 GroundVelocity;
+            bool Grounded = CurrentPlayer.CheckIfGrounded(out GroundVelocity);
+
+            if (Grounded)
+            {
+                AvailableJumps = MaxAvailableJumps;
             }
 
             switch (JumpState)
@@ -108,11 +122,7 @@ namespace WaterKat.Player
                     break;
 
                 case PlayerJumpState.Jumping:
-                    if (!JumpHeld)
-                    {
-                        JumpState = PlayerJumpState.FreeFalling;
-                        goto case PlayerJumpState.FreeFalling;
-                    }
+
                     if (CurrentVelocity.y < 0)
                     {
                         JumpState = PlayerJumpState.SlowFalling;
@@ -122,11 +132,7 @@ namespace WaterKat.Player
                     //break;
 
                 case PlayerJumpState.SlowFalling:
-                    if (!JumpHeld)
-                    {
-                        JumpState = PlayerJumpState.FreeFalling;
-                        goto case PlayerJumpState.FreeFalling;
-                    }
+
                     if (CurrentVelocity.y < FreefallVelocity)
                     {
                         JumpState = PlayerJumpState.FreeFalling;

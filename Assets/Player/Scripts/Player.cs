@@ -20,7 +20,23 @@ namespace WaterKat.Player
             }
         }
 
+        public DefaultPlayerInput InputActionMap;
+
+        private void Awake()
+        {
+            InputActionMap = new DefaultPlayerInput();
+        }
+        private void OnEnable()
+        {
+            InputActionMap.Enable();
+        }
+        private void OnDisable()
+        {
+            InputActionMap.Disable();
+        }
+
         #region "Grounded"
+        public bool Grounded = false;
         public float GroundDistance = 0.15f;
         float SphereRadius = 0.6f;
 
@@ -54,6 +70,9 @@ namespace WaterKat.Player
         }
         #endregion
 
-
+        private void Update()
+        {
+            Grounded = CheckIfGrounded();
+        }
     }
 }
