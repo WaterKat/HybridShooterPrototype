@@ -1,5 +1,5 @@
 {
-    "name": "DefaultInput",
+    "name": "DefaultPlayerInput",
     "maps": [
         {
             "name": "Player",
@@ -25,6 +25,14 @@
                     "name": "Move",
                     "type": "Value",
                     "id": "4fc4a9b9-6c5b-47b7-85a1-fe746e0e6bdb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "SlowMo",
+                    "type": "Button",
+                    "id": "f1ee316f-0b06-4540-b865-0580d543776f",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
@@ -228,6 +236,28 @@
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "c8eef2af-703c-493e-806a-13493f3049f8",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardandMouse",
+                    "action": "SlowMo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b2ea6102-e860-406f-9525-de4edb6f4594",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "SlowMo",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         }

@@ -5,7 +5,7 @@ using WaterKat.TimeWarping;
 
 namespace WaterKat.Player
 {
-    public class AerialSlowMo : MonoBehaviour
+    public class SlowMo : MonoBehaviour
     {
         public float Transition = 0;
         public float TransitionSpeed = 0.075f;
@@ -15,8 +15,21 @@ namespace WaterKat.Player
         public Camera CameraA;
         public Camera CameraB;
 
+        public bool SlowMoToggle = false;
+
+        private void Awake()
+        {
+            ActivePlayer.InputActionMap.Player.SlowMo.started += ctx => Toggle();
+        }
+
+        public void Toggle()
+        {
+            SlowMoToggle = !SlowMoToggle;
+        }
+
         void Update()
         {
+            /*
             if (Transition == 1)
             {
                 CameraA.gameObject.SetActive(true);
@@ -40,6 +53,19 @@ namespace WaterKat.Player
             {
                 Transition += -TransitionSpeed;
             }
+            */
+
+            if (SlowMoToggle)
+            {
+                Transition += TransitionSpeed;
+            }
+            else
+            {
+                Transition += -TransitionSpeed;
+            }
+
+            CameraA.gameObject.SetActive(SlowMoToggle);
+            CameraB.gameObject.SetActive(SlowMoToggle);
             Transition = Mathf.Clamp01(Transition);
             
             

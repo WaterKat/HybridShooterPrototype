@@ -19,6 +19,10 @@ namespace WaterKat.Player
 
         public GameObject Reticle;
 
+        public Player CurrentPlayer;
+        public SlowMo SlowMoScript;
+        public bool AerialToggleAvailable = true;
+
         public Quaternion CameraQuaternion
         {
             get
@@ -26,8 +30,18 @@ namespace WaterKat.Player
                 return Quaternion.Euler(CameraRotation.y, CameraRotation.x, 0);
             }
         }
+
         private void Update()
         {
+            if ((CameraTransition == 1) && (AerialToggleAvailable))
+            {
+                AerialToggleAvailable = false;
+                SlowMoScript.SlowMoToggle = true;
+            }
+            if (CurrentPlayer.Grounded)
+            {
+                AerialToggleAvailable = true;
+            }
             if (!Input.GetMouseButton(1))
             {
                 CameraTransition += 0.1f;
