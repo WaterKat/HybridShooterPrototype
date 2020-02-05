@@ -38,6 +38,10 @@ namespace WaterKat.Player
                 AerialToggleAvailable = false;
                 SlowMoScript.SlowMoToggle = true;
             }
+            if ((CameraTransition != 1) && (!AerialToggleAvailable))
+            {
+                SlowMoScript.SlowMoToggle = false;
+            }
             if (CurrentPlayer.Grounded)
             {
                 AerialToggleAvailable = true;
